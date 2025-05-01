@@ -8,6 +8,10 @@ export default async function ProtectedLayout({ children }: PropsWithChildren) {
     headers: await headers(),
   });
 
+  if (!session) {
+    notFound();
+  }
+
   if (session?.user.role === "admin") {
     notFound();
   }

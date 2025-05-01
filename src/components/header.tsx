@@ -4,6 +4,15 @@ import ModeToggle from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -26,7 +35,10 @@ export default function Header() {
 
     if (error) {
       console.log(error.message);
+      return;
     }
+
+    console.log("Sign in successful");
   };
 
   const handleSignOut = async () => {
@@ -34,7 +46,10 @@ export default function Header() {
 
     if (error) {
       console.log(error.message);
+      return;
     }
+
+    console.log("Sign out successful");
   };
 
   return (
@@ -97,7 +112,23 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button onClick={handleSignIn}>Sign in</Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>Sign in</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Are you absolutely sure?</DialogTitle>
+                  <DialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <Button onClick={handleSignIn}>Sign in</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           )}
         </div>
       </nav>
