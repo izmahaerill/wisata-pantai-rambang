@@ -41,7 +41,7 @@ export default function Header() {
     <header>
       <nav className="flex items-center py-4">
         <div className="inline-flex w-1/2 items-center justify-start">
-          <p>Your Logo</p>
+          <Link href="/">Your Logo</Link>
         </div>
         <div className="inline-flex shrink-0 items-center gap-8">
           <Link href="/about">About</Link>
