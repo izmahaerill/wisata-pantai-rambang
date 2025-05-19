@@ -21,10 +21,10 @@ interface Props {
 }
 
 export default function Hero({
-  heading = "A Collection of Components Built With Shadcn & Tailwind",
-  description = "Finely crafted components built with React, Tailwind and Shadcn UI. Developers can copy and paste these blocks directly into their project.",
+  heading = "Rasakan Keindahan Pantai Rambang Lewat Tour Virtual 360°",
+  description = "Kunjungi Pantai Rambang dengan cara baru! Nikmati tur virtual 360°, temukan fasilitas terbaik, dan rencanakan perjalananmu.  Pantai Rambang siap menyambutmu dalam segala keindahannya!",
   button = {
-    text: "Discover all components",
+    text: "Jelajahi Pantai Rambang",
     url: "https://www.shadcnblocks.com",
   },
   reviews = {
@@ -55,10 +55,12 @@ export default function Hero({
   },
 }: Props) {
   return (
-    <section className="py-32">
+    <section className="pt-36 pb-16">
       <div className="container text-center">
         <div className="mx-auto flex max-w-screen-lg flex-col gap-6">
-          <h1 className="text-3xl font-extrabold lg:text-6xl">{heading}</h1>
+          <h1 className="font-sans text-3xl leading-none font-extrabold lg:text-6xl lg:leading-[5rem]">
+            {heading}
+          </h1>
           <p className="text-muted-foreground text-balance lg:text-lg">
             {description}
           </p>

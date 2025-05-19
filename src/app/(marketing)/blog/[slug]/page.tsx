@@ -1,71 +1,45 @@
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { allBlogs } from "contentlayer/generated";
-import { format, parseISO } from "date-fns";
-import { Metadata } from "next";
+import { posts } from "@/lib/blog-posts/posts-data";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 interface Props {
-  params: Promise<{
+  params: {
     slug: string;
-  }>;
-}
-
-export function generateStaticParams() {
-  return allBlogs.map((blog) => ({
-    slug: blog._raw.flattenedPath,
-  }));
-}
-
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata | undefined> {
-  const { slug } = await params;
-
-  const blog = allBlogs.find((blog) => blog._raw.flattenedPath === slug);
-
-  if (!blog) {
-    return;
-  }
-
-  return {
-    title: blog.title,
   };
 }
 
-export default async function Page({ params }: Props) {
-  const { slug } = await params;
+export default function Page({ params }: Props) {
+  const post = posts.find((p) => p.id === params.slug);
 
-  const blog = allBlogs.find((blog) => blog._raw.flattenedPath === slug);
-
-  if (!blog) {
-    return;
-  }
+  if (!post) return notFound();
 
   return (
-    <article className="prose prose-neutral dark:prose-invert mx-auto py-8">
+    <article className="prose prose-neutral dark:prose-invert mx-auto pt-28 md:pt-16">
       <div className="mb-8 text-center">
         <div className="mb-12">
-          <AspectRatio ratio={16 / 9}>
+          <div className="relative aspect-[16/9] overflow-hidden rounded-md">
             <Image
-              src={blog.image ?? ""}
-              alt={blog.title}
+              src={post.image}
+              alt={post.title}
               fill
-              className="h-full w-full rounded-md object-cover"
+              className="object-cover"
             />
-          </AspectRatio>
+          </div>
         </div>
-        <time dateTime={blog.date} className="text-muted-foreground text-sm">
-          {format(parseISO(blog.date), "MMMM d, yyyy")}
-        </time>
+        <p className="text-muted-foreground text-sm">{post.published}</p>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight">
-          {blog.title}
+          {post.title}
         </h1>
       </div>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: blog.body.html,
-        }}
-      />
+      <div>
+        <p>{post.summary}</p>
+        <p className="mt-4 text-blue-500">
+          Sumber:{" "}
+          <a href={post.url} className="underline" target="_blank">
+            {post.url}
+          </a>
+        </p>
+      </div>
     </article>
   );
 }

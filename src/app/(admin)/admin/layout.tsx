@@ -1,16 +1,15 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { notFound } from "next/navigation";
-import { PropsWithChildren } from "react";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import React, { PropsWithChildren } from "react";
 
-export default async function AdminLayout({ children }: PropsWithChildren) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (session?.user.role === "user") {
-    notFound();
-  }
-
-  return children;
+export default function Layout({ children }: PropsWithChildren) {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
+  );
 }

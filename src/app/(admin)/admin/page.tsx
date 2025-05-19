@@ -1,3 +1,3 @@
 export default function Admin() {
-  return <div>Admin</div>;
+  return <h3>dsf</h3>;
 }

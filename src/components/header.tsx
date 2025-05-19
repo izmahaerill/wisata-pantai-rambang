@@ -53,10 +53,10 @@ export default function Header() {
   };
 
   return (
-    <header>
+    <header className="fixed top-0 left-0 z-50 w-full bg-transparent px-10 backdrop-blur-md">
       <nav className="flex items-center py-4">
-        <div className="inline-flex w-1/2 items-center justify-start">
-          <Link href="/">Your Logo</Link>
+        <div className="inline-flex w-1/2 items-center justify-start text-2xl">
+          <Link href="/">Pantai Rambang</Link>
         </div>
         <div className="inline-flex shrink-0 items-center gap-8">
           <Link href="/about">About</Link>
