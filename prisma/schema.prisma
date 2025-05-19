@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -73,4 +72,31 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+enum Role {
+  KETUA
+  PENGURUS
+}
+
+model Team {
+  id        String    @id @default(uuid())
+  name      String
+  role      Role
+  about     String?
+  image     String
+  social    Social?   @relation(fields: [socialId], references: [id])
+  socialId  String?
+  createdAt DateTime?
+  updatedAt DateTime?
+
+  @@map("team")
+}
+
+model Social {
+  id        String  @id @default(uuid())
+  github    String?
+  facebook  String?
+  instagram String?
+  Team      Team[]
 }

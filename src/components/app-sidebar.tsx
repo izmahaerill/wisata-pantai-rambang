@@ -24,8 +24,18 @@ const items = [
   },
   {
     title: "Galery",
-    url: "/admin/galery",
+    url: "/admin/gallery",
     icon: Inbox,
+  },
+  {
+    title: "About",
+    url: "/admin/about",
+    icon: Settings,
+  },
+  {
+    title: "Blog",
+    url: "/admin/blog",
+    icon: Settings,
   },
   {
     title: "Ulasan",
@@ -35,7 +45,7 @@ const items = [
   {
     title: "Settings",
     url: "/admin/settings",
-    icon: Search,
+    icon: Settings,
   },
 ];
 

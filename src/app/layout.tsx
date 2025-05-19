@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { toast, Toaster } from "react-hot-toast";
 
 const geistSans = Inter({
   variable: "--font-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange>
           {children}
+          <Toaster position="top-right" />
         </ThemeProvider>
       </body>
     </html>
