@@ -27,8 +27,8 @@ import {
 } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Role } from "@prisma/client";
-import { Loader, UserPlus } from "lucide-react";
-import { useState } from "react";
+import { Loader, UserPen } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { titleCase } from "string-ts";
@@ -41,8 +41,11 @@ const schema = z.object({
 });
 
 type Schema = z.infer<typeof schema>;
+interface Props {
+  id: string;
+}
 
-export default function AddTeam() {
+export default function EditTeam({ id }: Props) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -67,8 +70,8 @@ export default function AddTeam() {
 
     await toast.promise(
       (async () => {
-        const response = await fetch("/api/team", {
-          method: "POST",
+        const response = await fetch(`/api/team/${id}`, {
+          method: "PUT",
           body: formData,
         });
 
@@ -86,26 +89,47 @@ export default function AddTeam() {
         return result.message;
       })(),
       {
-        loading: "Adding team member...",
+        loading: "Updating team member...",
         success: (message) => message,
         error: (error) => error.message,
       }
     );
   }
 
+  useEffect(() => {
+    async function getTeamById() {
+      const response = await fetch(`/api/team/${id}`);
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.message);
+        return;
+      }
+
+      form.reset({
+        name: result.team.name,
+        role: result.team.role,
+        image: result.team.image,
+      });
+    }
+
+    getTeamById();
+  }, [id, form]);
+
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button onClick={() => setDialogOpen(true)}>
-          <UserPlus />
-          Add Team
+          <UserPen />
+          <span className="sr-only">Edit Team</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Team Member</DialogTitle>
+          <DialogTitle>Edit Team Member</DialogTitle>
           <DialogDescription>
-            Fill in the details below to add a new team member.
+            Update the details below to edit the team member.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
