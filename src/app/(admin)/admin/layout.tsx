@@ -1,18 +1,25 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import React, { PropsWithChildren } from "react";
-import { Bell } from "lucide-react";
+import AppSidebar from "@/components/app-sidebar";
 import { Button } from "@/components/ui/button";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Bell } from "lucide-react";
+import { CSSProperties, PropsWithChildren } from "react";
 
-export default function Layout({ children }: PropsWithChildren) {
+export default function AdminLayout({ children }: PropsWithChildren) {
   return (
-    <SidebarProvider>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "18rem",
+          "--sidebar-width-mobile": "20rem",
+        } as CSSProperties
+      }>
       <AppSidebar />
-      <div className="container w-full">
+      <div className="container">
         <header className="flex items-center justify-between py-4">
-          <SidebarTrigger />
-          <Button variant="ghost" size="icon" className="size-7">
+          <SidebarTrigger className="size-9" />
+          <Button variant="ghost" size="icon">
             <Bell />
+            <span className="sr-only">Toggle Notification</span>
           </Button>
         </header>
         <main>{children}</main>

@@ -1,4 +1,7 @@
-import React, { Fragment } from "react";
+import AddTeam from "@/components/admin/add-team";
+import DeleteTeam from "@/components/admin/delete-team";
+import EditTeam from "@/components/admin/edit-team";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
   TableBody,
@@ -7,37 +10,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { db } from "@/lib/db";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Pencil, Trash } from "lucide-react";
-import { AddTeamModal } from "@/components/admin/AddTeamModal";
+import { charAt, titleCase, toUpperCase } from "string-ts";
 
-export default async function AdminAbout() {
+export default async function Team() {
   const teams = await db.team.findMany();
-  const handleSubmit = async () => {
-    // TODO: ambil value file upload -> simpen /images/gambar.png
-
-    return db.team.create({
-      data: {
-        name: "name",
-        role: "PENGURUS",
-        image: "http://localhost/gambar.png",
-        social: {
-          create: {
-            github: "github",
-          },
-        },
-      },
-    });
-  };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between">
-        <h2>All Teams</h2>
-        <AddTeamModal />
+        <h1 className="text-3xl font-semibold tracking-tight">All Team</h1>
+        <AddTeam />
       </div>
       <Table>
         <TableHeader>
@@ -53,30 +36,27 @@ export default async function AdminAbout() {
           {teams.length ? (
             teams.map((team, index) => (
               <TableRow key={index}>
-                <TableCell className="font-medium">{index++}</TableCell>
+                <TableCell className="font-medium">{index + 1}</TableCell>
                 <TableCell>
                   <Avatar>
                     <AvatarImage src={team.image} alt={team.name} />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>
+                      {toUpperCase(charAt(team.name, 0))}
+                    </AvatarFallback>
                   </Avatar>
                 </TableCell>
                 <TableCell>{team.name}</TableCell>
-                <TableCell>{team.role}</TableCell>
+                <TableCell>{titleCase(team.role)}</TableCell>
                 <TableCell className="flex justify-end gap-2">
-                  <Button size="icon">
-                    {/* <Button size="icon" onClick={() => openEditModal(team)}> */}
-                    <Pencil />
-                  </Button>
-                  <Button variant="destructive" size="icon">
-                    <Trash />
-                  </Button>
+                  <EditTeam id={team.id} />
+                  <DeleteTeam id={team.id} />
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
               <TableCell colSpan={5} className="h-24 text-center">
-                No results.
+                No data available.
               </TableCell>
             </TableRow>
           )}

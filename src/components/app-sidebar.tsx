@@ -1,9 +1,8 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Calendar, Home, Inbox, Settings, Users } from "lucide-react";
 
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -11,10 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { NavUser } from "./nav-user";
-import { client } from "@/lib/auth/client";
-
-// Menu items.
+import Link from "next/link";
 
 const items = [
   {
@@ -23,14 +19,14 @@ const items = [
     icon: Home,
   },
   {
-    title: "Galery",
+    title: "Gallery",
     url: "/admin/gallery",
     icon: Inbox,
   },
   {
-    title: "About",
-    url: "/admin/about",
-    icon: Settings,
+    title: "Team",
+    url: "/admin/team",
+    icon: Users,
   },
   {
     title: "Blog",
@@ -49,11 +45,9 @@ const items = [
   },
 ];
 
-export function AppSidebar() {
-  //   const { data: session } = client.useSession();
-
+export default function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar variant="floating">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -62,10 +56,10 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -73,9 +67,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser />
-      </SidebarFooter>
     </Sidebar>
   );
 }
