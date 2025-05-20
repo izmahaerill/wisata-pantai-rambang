@@ -1,46 +1,87 @@
-// app/api/team/route.ts
-import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import path from "path";
 import { db } from "@/lib/db";
 import { Role } from "@prisma/client";
+import { randomUUID } from "crypto";
+import { mkdir, writeFile } from "fs/promises";
+import path from "path";
 
-export async function POST(req: Request) {
-  const formData = await req.formData();
-  const name = formData.get("name") as string;
-  const role = formData.get("role") as string;
-  const file = formData.get("image") as File;
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_SIZE = 2 * 1024 * 1024; // 2MB
+const IMAGE_UPLOAD_DIR = path.join(process.cwd(), "public", "images", "team");
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+export async function POST(request: Request) {
+  try {
+    const formData = await request.formData();
 
-  const fileName = `${Date.now()}-${file.name}`;
-  const filePath = path.join(process.cwd(), "public/images", fileName);
+    const name = formData.get("name");
+    const role = formData.get("role");
+    const file = formData.get("image") as File;
 
-  await writeFile(filePath, buffer);
+    if (
+      typeof name !== "string" ||
+      !name.trim() ||
+      typeof role !== "string" ||
+      !role.trim()
+    ) {
+      return Response.json(
+        { message: "Name and role are required." },
+        { status: 400 }
+      );
+    }
 
-  const imageUrl = `/images/${fileName}`;
+    if (!Object.values(Role).includes(role as Role)) {
+      return Response.json({ message: "Invalid role value." }, { status: 400 });
+    }
 
-  if (!Object.values(Role).includes(role as Role)) {
-    return NextResponse.json({ error: "Invalid role" }, { status: 400 });
-  }
+    let image: string = "";
 
-  if (!name || !role || !file) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
-  }
+    if (file && file.size > 0) {
+      if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        return Response.json(
+          { message: "Invalid image type." },
+          { status: 400 }
+        );
+      }
 
-  await db.team.create({
-    data: {
-      name,
-      role: role as Role,
-      image: imageUrl,
-      social: {
-        create: {
-          github: "", // default atau nanti ditambahkan lewat form
-        },
+      if (file.size > MAX_SIZE) {
+        return Response.json(
+          { message: "Image size exceeds 2MB." },
+          { status: 400 }
+        );
+      }
+
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const ext = path.extname(file.name) || ".webp";
+      const fileName = `${randomUUID()}${ext}`;
+      const filePath = path.join(IMAGE_UPLOAD_DIR, fileName);
+
+      await mkdir(IMAGE_UPLOAD_DIR, {
+        recursive: true,
+      });
+      await writeFile(filePath, buffer);
+
+      image = `/images/team/${fileName}`;
+    }
+
+    const team = await db.team.create({
+      data: {
+        name: name.trim(),
+        role: role as Role,
+        image,
       },
-    },
-  });
+    });
 
-  return NextResponse.json({ success: true });
+    return Response.json({
+      message: "Team member added successfully.",
+      team,
+    });
+  } catch (error) {
+    console.error("Error adding team member:", error);
+
+    return Response.json(
+      { message: "Internal server error." },
+      { status: 500 }
+    );
+  }
 }

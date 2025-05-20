@@ -74,19 +74,14 @@ model Verification {
   @@map("verification")
 }
 
-enum Role {
-  KETUA
-  PENGURUS
-}
-
 model Team {
   id        String    @id @default(uuid())
   name      String
   role      Role
-  about     String?
   image     String
-  social    Social?   @relation(fields: [socialId], references: [id])
+  about     String?
   socialId  String?
+  social    Social?   @relation(fields: [socialId], references: [id], onDelete: Cascade)
   createdAt DateTime?
   updatedAt DateTime?
 
@@ -99,4 +94,11 @@ model Social {
   facebook  String?
   instagram String?
   Team      Team[]
+
+  @@map("social")
+}
+
+enum Role {
+  KETUA
+  PENGURUS
 }
