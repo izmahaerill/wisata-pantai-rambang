@@ -120,7 +120,10 @@ export default function EditTeam({ id }: Props) {
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setDialogOpen(true)}>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setDialogOpen(true)}>
           <UserPen />
           <span className="sr-only">Edit Team</span>
         </Button>

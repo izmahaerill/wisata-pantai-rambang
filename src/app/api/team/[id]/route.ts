@@ -122,3 +122,38 @@ export async function PUT(
     );
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    const team = await db.team.findUnique({
+      where: { id },
+    });
+
+    if (!team) {
+      return Response.json(
+        { message: "Team member not found." },
+        { status: 404 }
+      );
+    }
+
+    await db.team.delete({
+      where: { id },
+    });
+
+    return Response.json({
+      message: "Team member deleted successfully.",
+    });
+  } catch (error) {
+    console.error("Error deleting team member:", error);
+
+    return Response.json(
+      { message: "Internal server error." },
+      { status: 500 }
+    );
+  }
+}

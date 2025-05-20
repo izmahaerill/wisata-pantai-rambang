@@ -1,7 +1,7 @@
 import AddTeam from "@/components/admin/add-team";
+import DeleteTeam from "@/components/admin/delete-team";
 import EditTeam from "@/components/admin/edit-team";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -11,7 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { db } from "@/lib/db";
-import { UserX } from "lucide-react";
 import { charAt, titleCase, toUpperCase } from "string-ts";
 
 export default async function Team() {
@@ -50,9 +49,7 @@ export default async function Team() {
                 <TableCell>{titleCase(team.role)}</TableCell>
                 <TableCell className="flex justify-end gap-2">
                   <EditTeam id={team.id} />
-                  <Button variant="destructive" size="icon">
-                    <UserX />
-                  </Button>
+                  <DeleteTeam id={team.id} />
                 </TableCell>
               </TableRow>
             ))
