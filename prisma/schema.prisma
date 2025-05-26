@@ -102,3 +102,19 @@ enum Role {
   KETUA
   PENGURUS
 }
+
+model Review {
+  id        String   @id @default(uuid())
+  username  String
+  date      DateTime
+  text      String
+  image     String?
+  createdAt DateTime @default(now())
+}
+
+model Facilities {
+  id        String   @id @default(cuid())
+  name      String
+  image     String
+  createdAt DateTime @default(now())
+}

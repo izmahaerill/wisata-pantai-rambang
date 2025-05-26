@@ -1,4 +1,12 @@
-import { Calendar, Home, Inbox, Settings, Users } from "lucide-react";
+import {
+  BadgeCheck,
+  BadgePlus,
+  Calendar,
+  Home,
+  Inbox,
+  Settings,
+  Users,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -22,6 +30,11 @@ const items = [
     title: "Gallery",
     url: "/admin/gallery",
     icon: Inbox,
+  },
+  {
+    title: "Facilities",
+    url: "/admin/facilities",
+    icon: BadgePlus,
   },
   {
     title: "Team",

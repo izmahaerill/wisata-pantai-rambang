@@ -8,6 +8,19 @@ const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_SIZE = 2 * 1024 * 1024; // 2MB
 const IMAGE_UPLOAD_DIR = path.join(process.cwd(), "public", "images", "team");
 
+export async function GET() {
+  try {
+    const teams = await db.team.findMany();
+    return Response.json({ teams });
+  } catch (error) {
+    console.error("Error fetching teams:", error);
+    return Response.json(
+      { message: "Internal server error." },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();

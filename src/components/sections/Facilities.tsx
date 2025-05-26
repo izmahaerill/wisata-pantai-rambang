@@ -1,48 +1,84 @@
 "use client";
-
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  ParkingSquare,
-  ShowerHead,
-  Utensils,
-  TentTree,
-  Landmark,
-  Church,
-  Sun,
-} from "lucide-react";
 import Heading from "../micro/Heading";
-const facilities = [
-  { icon: ParkingSquare, name: "Parkir Luas" },
-  { icon: ShowerHead, name: "Kamar Bilas" },
-  { icon: Utensils, name: "Warung Makan" },
-  { icon: TentTree, name: "Area Camping" },
-  { icon: Landmark, name: "Gazebo" },
-  { icon: Church, name: "Musholla" },
-  { icon: Sun, name: "Spot Sunrise" },
-];
+
+type Facility = {
+  id: string;
+  name: string;
+  image: string;
+};
 
 export default function Facilities() {
+  const [facilities, setFacilities] = useState<Facility[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        const res = await fetch("/api/facilities");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        setFacilities(data);
+      } catch (err) {
+        console.error("Error fetching facilities:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFacilities();
+  }, []);
+
+  if (loading) {
+    return <p className="text-center text-gray-500">Loading fasilitas...</p>;
+  }
+
   return (
     <section className="w-full bg-gradient-to-b py-16">
-      <div className="mx-auto max-w-7xl px-0">
+      <div className="mx-auto max-w-7xl px-4">
         <Heading
           heading="Fasilitas Pantai"
           subheading="Nikmati beragam fasilitas yang kami sediakan, mulai dari area parkir, gazebo santai, toilet umum, hingga spot kuliner lokal yang siap memanjakan kunjunganmu."
           align="center"
         />
-        <div className="flex gap-4 overflow-x-auto px-4 md:flex-wrap md:justify-center md:gap-8 md:px-0">
-          {facilities.map((facility, index) => (
-            <Card
-              key={index}
-              className="group text-card-foreground bg-card flex w-48 flex-shrink-0 flex-col items-center rounded-2xl p-6 transition-all duration-300 hover:shadow-lg sm:w-60">
-              <facility.icon className="text-muted-foreground group-hover:text-primary mb-4 h-12 w-12 transition-colors duration-300" />
-              <CardContent className="p-0 text-center">
-                <p className="text-card-foreground group-hover:text-primary text-base font-semibold">
-                  {facility.name}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+
+        <div className="mt-10 grid place-items-center">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {facilities.map((facility) => (
+              <motion.div
+                key={facility.id}
+                whileHover={{ scale: 1.05 }}
+                className="overflow-visible">
+                <Card className="flex h-full w-full flex-col items-center justify-center text-center">
+                  <CardContent className="flex flex-col items-center justify-center p-6">
+                    <div className="mb-4 flex h-24 w-24 items-center justify-center">
+                      {facility.image ? (
+                        <Image
+                          src={
+                            facility.image.startsWith("/")
+                              ? facility.image
+                              : `/images/facilities/${facility.image}`
+                          }
+                          alt={facility.name}
+                          width={70}
+                          height={70}
+                          className="object-contain dark:invert"
+                        />
+                      ) : (
+                        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-200 text-sm text-gray-500">
+                          No Image
+                        </div>
+                      )}
+                    </div>
+                    <h4 className="text-base font-bold">{facility.name}</h4>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

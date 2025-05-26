@@ -97,7 +97,7 @@ export default function Header() {
                 ) : (
                   <>
                     <Link href="/my-review">
-                      <DropdownMenuItem>Ulasan</DropdownMenuItem>
+                      <DropdownMenuItem>Ulasan Saya</DropdownMenuItem>
                     </Link>
                     <Link href="/settings">
                       <DropdownMenuItem>Pengaturan</DropdownMenuItem>
