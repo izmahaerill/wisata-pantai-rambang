@@ -33,7 +33,33 @@ export default function Facilities() {
   }, []);
 
   if (loading) {
-    return <p className="text-center text-gray-500">Loading fasilitas...</p>;
+    return (
+      <section className="w-full bg-gradient-to-b py-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <Heading
+            heading="Fasilitas Pantai"
+            subheading="Nikmati beragam fasilitas yang kami sediakan, mulai dari area parkir, gazebo santai, toilet umum, hingga spot kuliner lokal yang siap memanjakan kunjunganmu."
+            align="center"
+          />
+
+          <div className="mt-10 grid place-items-center">
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {Array(4)
+                .fill(0)
+                .map((_, i) => (
+                  <div
+                    key={i}
+                    className="flex animate-pulse flex-col items-center justify-center rounded-lg bg-gray-300 p-6 shadow"
+                    style={{ height: "200px", width: "150px" }}>
+                    <div className="mb-4 h-24 w-24 rounded-full bg-gray-400"></div>
+                    <div className="h-6 w-20 rounded bg-gray-400"></div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (

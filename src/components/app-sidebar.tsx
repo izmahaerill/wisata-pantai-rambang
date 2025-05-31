@@ -37,7 +37,7 @@ const items = [
     icon: BadgePlus,
   },
   {
-    title: "Team",
+    title: "About",
     url: "/admin/team",
     icon: Users,
   },

@@ -13,10 +13,10 @@ const sections = [
   {
     title: "Company",
     links: [
-      { name: "About", href: "#" },
-      { name: "Team", href: "#" },
-      { name: "Blog", href: "#" },
-      { name: "Careers", href: "#" },
+      { name: "About", href: "/src/app/(marketing)/about/page.tsx" },
+      { name: "Team", href: "/src/app/(marketing)/about/page.tsx" },
+      { name: "Blog", href: "/src/app/(marketing)/blog/page.tsx" },
+      { name: "Virtual Reality", href: "#" },
     ],
   },
   {
@@ -43,7 +43,7 @@ const Footer = ({
     url: "https://www.shadcnblocks.com",
     src: "https://shadcnblocks.com/images/block/logos/shadcnblockscom-icon.svg",
     alt: "logo",
-    title: "Shadcnblocks.com",
+    title: "Wisata Pantai Rambang",
   },
 }: Footer7Props) => {
   return (
@@ -64,27 +64,27 @@ const Footer = ({
               <h2 className="text-xl font-semibold">{logo.title}</h2>
             </div>
             <p className="text-muted-foreground text-sm">
-              A collection of 100+ responsive HTML templates for your startup
-              business or side project.
+              Nikmati suasana yang asri dan indah Anda di Wisata Pantai Rambang
+              dan Wisata Menange Rambang
             </p>
             <ul className="text-muted-foreground flex items-center space-x-6">
               <li className="hover:text-primary font-medium">
-                <a href="#">
+                <a href="https://www.instagram.com/mkhairilazmii/">
                   <FaInstagram className="size-6" />
                 </a>
               </li>
               <li className="hover:text-primary font-medium">
-                <a href="#">
+                <a href="https://www.facebook.com/share/1C3RrUbVHD/">
                   <FaFacebook className="size-6" />
                 </a>
               </li>
               <li className="hover:text-primary font-medium">
-                <a href="#">
+                <a href="https://x.com/Azmiiyaa22">
                   <FaTwitter className="size-6" />
                 </a>
               </li>
               <li className="hover:text-primary font-medium">
-                <a href="#">
+                <a href="www.linkedin.com/in/muh-haeril-azmi-a966622a7">
                   <FaLinkedin className="size-6" />
                 </a>
               </li>
@@ -108,7 +108,7 @@ const Footer = ({
           </div>
         </div>
         <div className="text-muted-foreground mt-8 flex flex-col justify-between gap-4 border-t pt-8 text-center text-sm font-medium lg:flex-row lg:items-center lg:text-left">
-          <p>© 2024 Shadcnblocks.com. All rights reserved.</p>
+          <p>© 2024 Pantai Rambang. All rights reserved.</p>
           <ul className="flex justify-center gap-4 lg:justify-start">
             <li className="hover:text-primary">
               <a href="#"> Terms and Conditions</a>

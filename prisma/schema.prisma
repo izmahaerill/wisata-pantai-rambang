@@ -118,3 +118,9 @@ model Facilities {
   image     String
   createdAt DateTime @default(now())
 }
+
+model Gallery {
+  id        String   @id @default(cuid())
+  image     String
+  createdAt DateTime @default(now())
+}

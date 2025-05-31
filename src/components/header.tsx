@@ -23,6 +23,7 @@ import {
 import { client } from "@/lib/auth/client";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
+import LanguageSwitch from "./micro/LanguageSwitch";
 
 export default function Header() {
   const { data: session } = client.useSession();
@@ -102,6 +103,9 @@ export default function Header() {
                     <Link href="/settings">
                       <DropdownMenuItem>Pengaturan</DropdownMenuItem>
                     </Link>
+                    <div className="px-2 py-1">
+                      <LanguageSwitch currentLocale={"locale"} />
+                    </div>
                   </>
                 )}
                 <DropdownMenuSeparator />
