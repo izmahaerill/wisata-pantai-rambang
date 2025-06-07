@@ -6,6 +6,7 @@ import {
   Inbox,
   Settings,
   Users,
+  NotebookPen,
 } from "lucide-react";
 
 import {
@@ -23,7 +24,7 @@ import Link from "next/link";
 const items = [
   {
     title: "Dashboard",
-    url: "/admin",
+    url: "/admin/",
     icon: Home,
   },
   {
@@ -44,7 +45,7 @@ const items = [
   {
     title: "Blog",
     url: "/admin/blog",
-    icon: Settings,
+    icon: NotebookPen,
   },
   {
     title: "Ulasan",
@@ -63,7 +64,7 @@ export default function AppSidebar() {
     <Sidebar variant="floating">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Pantai Rambang</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
