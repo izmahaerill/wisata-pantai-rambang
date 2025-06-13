@@ -1,40 +1,63 @@
-// app/api/review/route.ts
-import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { headers } from "next/headers";
 
-const prisma = new PrismaClient();
-
-export async function GET() {
+export async function POST(request: Request) {
   try {
-    const reviews = await prisma.review.findMany({
-      orderBy: { date: "desc" },
+    const session = await auth.api.getSession({
+      headers: await headers(),
     });
-    return NextResponse.json(reviews);
-  } catch (error) {
-    return NextResponse.json(
-      { message: "Failed to fetch reviews" },
-      { status: 500 }
-    );
-  }
-}
 
-export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const { username, text, date, image } = body;
-
-    if (!username || !text || !date) {
-      return NextResponse.json({ message: "Missing fields" }, { status: 400 });
+    if (!session?.user.id) {
+      return Response.json({ message: "Unauthorized." }, { status: 401 });
     }
 
-    const review = await prisma.review.create({
-      data: { username, text, date: new Date(date), image },
+    const formData = await request.formData();
+
+    const content = formData.get("content");
+
+    if (typeof content !== "string" || !content.trim()) {
+      return Response.json(
+        { message: "Content is required." },
+        { status: 400 }
+      );
+    }
+
+    const review = await db.review.create({
+      data: {
+        userId: session.user.id,
+        content,
+      },
     });
 
-    return NextResponse.json(review);
+    const admins = await db.user.findMany({
+      where: {
+        role: "admin",
+      },
+    });
+
+    await Promise.all(
+      admins.map((admin) => {
+        return db.notification.create({
+          data: {
+            userId: admin.id,
+            type: "REVIEW_SUBMITTED",
+            message: `Review baru dari ${session.user.name}`,
+            relatedReviewId: review.id,
+          },
+        });
+      })
+    );
+
+    return Response.json(
+      { message: "Review submitted successfully." },
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json(
-      { message: "Error saving review" },
+    console.error("Error submitting review:", error);
+
+    return Response.json(
+      { message: "Internal server error." },
       { status: 500 }
     );
   }

@@ -23,6 +23,9 @@ model User {
   banReason  String?
   banExpires DateTime?
 
+  Review       Review[]
+  Notification Notification[]
+
   @@unique([email])
   @@map("user")
 }
@@ -103,13 +106,48 @@ enum Role {
   PENGURUS
 }
 
+// model Review {
+//   id        String   @id @default(uuid())
+//   username  String
+//   date      DateTime
+//   text      String
+//   image     String?
+//   createdAt DateTime @default(now())
+// }
+
 model Review {
-  id        String   @id @default(uuid())
-  username  String
-  date      DateTime
-  text      String
-  image     String?
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String
+  // rating       Int            @default(5) // skala 1–5
+  approved  Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Notification Notification[]
+
+  @@map("review")
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  message   String
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  relatedReviewId String?
+  relatedReview   Review? @relation(fields: [relatedReviewId], references: [id], onDelete: Cascade)
+
+  @@map("notification")
+}
+
+enum NotificationType {
+  REVIEW_SUBMITTED
+  REVIEW_APPROVED
 }
 
 model Facilities {

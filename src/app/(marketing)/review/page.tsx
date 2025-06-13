@@ -1,71 +1,78 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Heading from "@/components/micro/Heading";
-import AddReview from "@/components/reviewer/add-reviewer";
 import { Button } from "@/components/ui/button";
-import { Testimonials } from "@/components/ui/testimonials";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { z } from "zod";
+
+const schema = z.object({
+  content: z.string().min(2),
+});
+
+type Schema = z.infer<typeof schema>;
 
 export default function Review() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [reviews, setReviews] = useState<
-    { image: string; name: string; date: string; text: string }[]
-  >([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const res = await fetch("/api/review");
-        if (!res.ok) throw new Error("Failed to fetch reviews");
+  const form = useForm<Schema>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      content: "",
+    },
+  });
 
-        const data = await res.json();
+  async function onSubmit(values: Schema) {
+    const formData = new FormData();
 
-        const formatted = data.map((r: any) => ({
-          image: r.image || "/images/review/mubariz.jpg", // default avatar
-          name: r.username,
-          date: new Date(r.date).toISOString().split("T")[0],
-          text: r.text,
-        }));
+    formData.append("content", values.content);
 
-        setReviews(formatted);
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
+    await toast.promise(
+      (async () => {
+        const response = await fetch("/api/review", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          toast.error(result.message);
+          return;
+        }
+
+        form.reset();
+        setDialogOpen(false);
+
+        return result.message;
+      })(),
+      {
+        loading: "Mengirim ulasan...",
+        success: (message) => message,
+        error: (error) => error.message,
       }
-    };
-
-    fetchReviews();
-  }, []);
-
-  const handleAddReview = async (newReview: {
-    username: string;
-    date: string;
-    text: string;
-  }) => {
-    try {
-      const response = await fetch("/api/review", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newReview),
-      });
-
-      if (!response.ok) throw new Error("Failed to post review");
-
-      const savedReview = await response.json();
-
-      const formattedReview = {
-        image: savedReview.image || "/images/review/mubariz.jpg",
-        name: savedReview.username,
-        date: new Date(savedReview.date).toISOString().split("T")[0],
-        text: savedReview.text,
-      };
-
-      setReviews((prev) => [formattedReview, ...prev]);
-    } catch (error) {
-      console.error("Error submitting review:", error);
-    }
-  };
+    );
+  }
 
   return (
     <>
@@ -73,17 +80,44 @@ export default function Review() {
         heading="Read what people are saying"
         subheading="Real feedback from our virtual visitors!"
       />
-      <Testimonials testimonials={reviews} />
-      <Button
-        className="mt-4 underline underline-offset-4"
-        onClick={() => setIsModalOpen(true)}>
-        Write Your Own Review Here!
-      </Button>
-      <AddReview
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onSubmit={handleAddReview}
-      />
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger asChild>
+          <Button onClick={() => setDialogOpen(true)}>Tulis Ulasanmu</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Tulis Ulasanmu</DialogTitle>
+            <DialogDescription>
+              Bagikan pengalamanmu untuk membantu orang lain.
+            </DialogDescription>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="mt-4 flex flex-col gap-4">
+                <FormField
+                  control={form.control}
+                  name="content"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ulasanmu</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting && (
+                    <Loader className="animate-spin" />
+                  )}
+                  Kirim Ulasanmu
+                </Button>
+              </form>
+            </Form>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
