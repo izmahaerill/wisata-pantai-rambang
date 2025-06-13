@@ -1,10 +1,22 @@
 import AppSidebar from "@/components/app-sidebar";
-import { Button } from "@/components/ui/button";
+import NotificationToggle from "@/components/notification-toggle";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Bell } from "lucide-react";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { headers } from "next/headers";
 import { CSSProperties, PropsWithChildren } from "react";
 
-export default function AdminLayout({ children }: PropsWithChildren) {
+export default async function AdminLayout({ children }: PropsWithChildren) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  const notifications = await db.notification.findMany({
+    where: {
+      userId: session?.user.id,
+    },
+  });
+
   return (
     <SidebarProvider
       style={
@@ -16,11 +28,8 @@ export default function AdminLayout({ children }: PropsWithChildren) {
       <AppSidebar />
       <div className="container">
         <header className="flex items-center justify-between py-4">
-          <SidebarTrigger className="size-9" />
-          <Button variant="ghost" size="icon">
-            <Bell />
-            <span className="sr-only">Toggle Notification</span>
-          </Button>
+          <SidebarTrigger className="size-10" />
+          <NotificationToggle notifications={notifications} />
         </header>
         <main>{children}</main>
       </div>
