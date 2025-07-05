@@ -1,9 +1,11 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
+// File: src/components/admin/dashboard/section-cards.tsx
+"use client";
 
+import { useEffect, useState } from "react";
+import { IconTrendingUp } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
-  // CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -11,26 +13,35 @@ import {
 } from "@/components/ui/card";
 
 export function SectionCards() {
+  const [activeAccounts, setActiveAccounts] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("/api/admin/stats");
+      const data = await res.json();
+      setActiveAccounts(data.activeAccounts);
+    };
+    fetchData();
+  }, []);
+
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-      <Card className="@container/card">
+    <div className="grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+      <Card>
         <CardHeader>
           <CardDescription>Active Accounts</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            45,678
+          <CardTitle className="text-2xl font-semibold tabular-nums">
+            {activeAccounts}
           </CardTitle>
           <div>
             <Badge variant="outline">
               <IconTrendingUp />
-              +12.5%
+              +0%
             </Badge>
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
+          <div className="flex gap-2 font-medium">Sudah memberikan review</div>
+          <div className="text-muted-foreground">Total user yang aktif</div>
         </CardFooter>
       </Card>
     </div>

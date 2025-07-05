@@ -2,6 +2,25 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { headers } from "next/headers";
 
+export async function GET() {
+  try {
+    const reviews = await db.review.findMany({
+      where: { approved: true },
+      include: {
+        user: true, // ✅ ini penting agar bisa ambil user.name dan user.image
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return Response.json(reviews);
+  } catch (error) {
+    console.error("Error fetching approved reviews:", error);
+    return Response.json({ message: "Internal Server Error" }, { status: 500 });
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const session = await auth.api.getSession({

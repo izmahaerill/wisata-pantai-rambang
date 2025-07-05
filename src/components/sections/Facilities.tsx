@@ -41,8 +41,7 @@ export default function Facilities() {
             subheading="Nikmati beragam fasilitas yang kami sediakan, mulai dari area parkir, gazebo santai, toilet umum, hingga spot kuliner lokal yang siap memanjakan kunjunganmu."
             align="center"
           />
-
-          <div className="mt-10 grid place-items-center">
+          <div className="grid place-items-center">
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {Array(4)
                 .fill(0)
@@ -61,7 +60,6 @@ export default function Facilities() {
       </section>
     );
   }
-
   return (
     <section className="w-full bg-gradient-to-b py-16">
       <div className="mx-auto max-w-7xl px-4">
@@ -71,7 +69,7 @@ export default function Facilities() {
           align="center"
         />
 
-        <div className="mt-10 grid place-items-center">
+        <div className="grid place-items-center">
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {facilities.map((facility) => (
               <motion.div

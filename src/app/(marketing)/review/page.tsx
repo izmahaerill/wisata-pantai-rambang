@@ -21,7 +21,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -34,6 +34,8 @@ type Schema = z.infer<typeof schema>;
 
 export default function Review() {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [loadingReviews, setLoadingReviews] = useState(true);
 
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
@@ -41,6 +43,23 @@ export default function Review() {
       content: "",
     },
   });
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch("/api/review");
+        const data = await res.json();
+        console.log("Review dengan image:", data);
+        setReviews(data);
+      } catch (error) {
+        console.error("Gagal ambil review:", error);
+      } finally {
+        setLoadingReviews(false);
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   async function onSubmit(values: Schema) {
     const formData = new FormData();
@@ -77,8 +96,8 @@ export default function Review() {
   return (
     <>
       <Heading
-        heading="Read what people are saying"
-        subheading="Real feedback from our virtual visitors!"
+        heading="Ulasan Pengalaman Pengunjung"
+        subheading="Pendapat mereka yang telah merasakan Pantai Rambang, secara virtual dan nyata."
       />
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
@@ -118,6 +137,46 @@ export default function Review() {
           </DialogHeader>
         </DialogContent>
       </Dialog>
+
+      <div className="mt-10">
+        {loadingReviews ? (
+          <p>Memuat ulasan...</p>
+        ) : reviews.length === 0 ? (
+          <p>Belum ada ulasan yang ditampilkan.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {reviews.map((review) => (
+              <div
+                key={review.id}
+                className="rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md dark:bg-zinc-900">
+                <div className="mb-3 flex items-center gap-4">
+                  <img
+                    src={
+                      review.user.image ||
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                        review.user.name
+                      )}&background=random`
+                    }
+                    alt={review.user.name}
+                    className="h-10 w-10 rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="text-base font-semibold">
+                      {review.user.name}
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                      {new Date(review.createdAt).toLocaleDateString("id-ID")}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-muted-foreground line-clamp-4 text-sm">
+                  {review.content}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </>
   );
 }

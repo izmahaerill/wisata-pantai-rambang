@@ -3,7 +3,7 @@ import Heading from "../micro/Heading";
 
 export default function Maps() {
   return (
-    <div className="">
+    <div className="py-16">
       <Heading
         heading="Lokasi & Akses"
         subheading="Temukan lokasi Pantai Rambang dengan mudah. Ikuti petunjuk peta kami untuk sampai ke tempat wisata indah ini."

@@ -14,9 +14,7 @@ import { charAt, toUpperCase } from "string-ts";
 
 export default async function Ulasan() {
   const reviews = await db.review.findMany({
-    where: {
-      approved: false,
-    },
+    orderBy: { createdAt: "desc" },
     include: {
       user: true,
     },
@@ -28,22 +26,28 @@ export default async function Ulasan() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">No</TableHead>
+            <TableHead className="w-[60px]">No</TableHead>
             <TableHead>Gambar</TableHead>
             <TableHead>Nama</TableHead>
             <TableHead>Konten</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead className="text-right">Aksi</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {reviews.length ? (
             reviews.map((review, index) => (
-              <TableRow key={index}>
+              <TableRow key={review.id}>
                 <TableCell className="font-medium">{index + 1}</TableCell>
                 <TableCell>
                   <Avatar>
                     <AvatarImage
-                      src={review.user.image ?? ""}
+                      src={
+                        review.user.image ??
+                        `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                          review.user.name
+                        )}`
+                      }
                       alt={review.user.name}
                     />
                     <AvatarFallback>
@@ -55,16 +59,27 @@ export default async function Ulasan() {
                 <TableCell className="max-w-48 truncate">
                   {review.content}
                 </TableCell>
+                <TableCell>
+                  {review.approved ? (
+                    <span className="font-medium text-green-600">
+                      Disetujui
+                    </span>
+                  ) : (
+                    <span className="font-medium text-yellow-600">
+                      Menunggu
+                    </span>
+                  )}
+                </TableCell>
                 <TableCell className="flex justify-end gap-2">
-                  <Approve id={review.id} />
+                  {!review.approved && <Approve id={review.id} />}
                   <Delete id={review.id} />
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={5} className="h-24 text-center">
-                No data available.
+              <TableCell colSpan={6} className="h-24 text-center">
+                Tidak ada ulasan.
               </TableCell>
             </TableRow>
           )}

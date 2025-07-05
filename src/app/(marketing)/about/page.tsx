@@ -1,6 +1,7 @@
 import { Dribbble, Github, Linkedin } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Footer } from "@/components/sections/Footer";
 
 interface Team {
   id: string;
@@ -15,8 +16,6 @@ const articleParagraphs = [
   "Salah satu daya tarik utama Pantai Rambang adalah pasir putihnya yang bersih dan ombak yang relatif tenang, membuatnya cocok untuk wisata keluarga, piknik santai, maupun aktivitas fotografi. Di sekitar pantai, terdapat juga warung lokal dan area parkir yang memudahkan pengunjung.",
   "Tidak hanya itu, Pantai Rambang juga menjadi bagian dari kehidupan masyarakat sekitar. Penduduk lokal sering memanfaatkan kawasan ini untuk kegiatan tradisional seperti mencari kerang, memancing, atau hanya bersantai menikmati senja.",
   "Meskipun belum banyak dikenal secara luas, Pantai Rambang memiliki potensi besar sebagai destinasi ekowisata yang ramah lingkungan dan bernuansa lokal. Oleh karena itu, penting untuk terus menjaga kebersihan dan kelestariannya agar keindahan alami ini tetap bisa dinikmati oleh generasi mendatang.",
-  "Tenetur blanditiis ipsa tempore eligendi quis obcaecati quo natus, quam hic labore asperiores.",
-  "Vel mollitia nulla officia aliquam at consectetur reprehenderit! Impedit sint doloribus sunt iure reiciendis incidunt? Autem, ex.",
 ];
 
 const AboutUs = async () => {
@@ -31,12 +30,12 @@ const AboutUs = async () => {
     <>
       <section className="pt-[8rem]">
         <div className="container flex flex-col items-start text-left">
-          <p className="semibold">The Rambang Beach</p>
+          <p className="semibold">Pantai Rambang</p>
           <h2 className="my-6 text-2xl font-bold text-pretty lg:text-4xl">
-            Natural Tourism Destinations in East Lombok
+            Destinasi Wisata Alam di Lombok Timur
           </h2>
           <p className="text-muted-foreground mb-8 max-w-3xl lg:text-xl">
-            Feel the tranquility of nature and the charm of the pristine sea.
+            Rasakan ketenangan alam dan pesona laut yang masih asli
           </p>
         </div>
         <article className="mx-auto w-full space-y-4 px-4 text-left sm:max-w-full md:max-w-[80%] lg:max-w-[90%]">
@@ -47,14 +46,15 @@ const AboutUs = async () => {
           ))}
         </article>
       </section>
-      <section className="about py-32">
+      <section className="about pt-32">
         <div className="container flex flex-col items-start text-left">
-          <p className="semibold">Our team</p>
+          <p className="semibold">Tim Pengelola Wisata Pantai Rambang</p>
           <h2 className="my-6 text-2xl font-bold text-pretty lg:text-4xl">
-            The team you&apos;ll be working with
+            Wajah di Balik Keindahan Pantai Rambang
           </h2>
           <p className="text-muted-foreground mb-8 max-w-3xl lg:text-xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Mereka yang bertugas mengelola, menjaga, dan melayani pengunjung
+            pantai
           </p>
         </div>
         <div className="container mt-16 grid gap-x-12 gap-y-16 md:grid-cols-2 lg:grid-cols-4">
@@ -73,7 +73,7 @@ const AboutUs = async () => {
                   </p>
                 )}
               </p>
-              <div className="mt-2 flex gap-4">
+              {/* <div className="mt-2 flex gap-4">
                 <a href="#">
                   <Github className="text-muted-foreground size-5" />
                 </a>
@@ -83,11 +83,12 @@ const AboutUs = async () => {
                 <a href="#">
                   <Dribbble className="text-muted-foreground size-5" />
                 </a>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
       </section>
+      <Footer />
     </>
   );
 };

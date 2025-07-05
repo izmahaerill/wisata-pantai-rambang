@@ -14,4 +14,19 @@ export const auth = betterAuth({
     },
   },
   plugins: [admin()],
+  events: {
+    async onLogin({
+      user,
+    }: {
+      user: { id: string; name?: string; image?: string };
+    }) {
+      await db.user.update({
+        where: { id: user.id },
+        data: {
+          name: user.name,
+          image: user.image,
+        },
+      });
+    },
+  },
 });

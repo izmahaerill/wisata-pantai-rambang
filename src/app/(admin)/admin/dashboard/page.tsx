@@ -1,10 +1,19 @@
-import { DataTable } from "@/components/admin/dashboard/data-table";
-import { SectionCards } from "@/components/admin/dashboard/section-cards";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SectionCardsWithUsers } from "@/components/admin/dashboard/SectionCardsWithUsers";
+import { prisma } from "@/lib/prisma";
 
-import data from "./data.json";
+export default async function Dashboard() {
+  const users = await prisma.user.findMany({
+    where: { Review: { some: {} } },
+    select: { name: true, email: true },
+  });
 
-export default function Dashboard() {
+  const userData = users.map((user, i) => ({
+    no: i + 1,
+    name: user.name,
+    email: user.email,
+  }));
+
   return (
     <SidebarProvider
       style={
@@ -15,11 +24,8 @@ export default function Dashboard() {
       }>
       <SidebarInset>
         <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <SectionCards />
-              <DataTable data={data} />
-            </div>
+          <div className="flex flex-1 flex-col gap-4 py-6">
+            <SectionCardsWithUsers users={userData} />
           </div>
         </div>
       </SidebarInset>
