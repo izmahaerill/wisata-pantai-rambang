@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="pt-20 pb-16 text-center text-white">
+    <section className="bg-background text-foreground pt-20 pb-16 text-center">
       <div className="container mx-auto max-w-screen-lg space-y-6 sm:space-y-8 md:space-y-10">
         <div>
           <Badge
@@ -13,6 +13,7 @@ export default function Hero() {
             ✨ Better Experience With VR Tour • 360°
           </Badge>
         </div>
+
         <div className="flex flex-wrap justify-center gap-3">
           <Badge
             variant="outline"
@@ -41,17 +42,19 @@ export default function Hero() {
           <br />
           Rambang Lewat Tour Virtual 360°
         </h1>
-        <p className="mx-auto max-w-3xl text-lg leading-relaxed text-gray-300 md:text-xl">
+
+        <p className="text-muted-foreground mx-auto max-w-3xl text-lg leading-relaxed md:text-xl">
           Kunjungi Pantai Rambang dengan cara baru! Nikmati Tour Virtual 360°,
           temukan fasilitas terbaik, dan rencanakan perjalananmu. Pantai Rambang
           siap menyambutmu dalam segala keindahannya!
         </p>
+
         <div className="flex flex-col justify-center gap-4 sm:flex-row">
           <Link href="/virtual-tour">
             <Button
               variant="outline"
               size="lg"
-              className="border-white bg-transparent px-8 py-3 text-lg text-white transition-all duration-300 hover:bg-white hover:text-black">
+              className="hover:bg-foreground hover:text-background dark:hover:bg-background dark:hover:text-foreground cursor-pointer px-8 py-3 text-lg transition-all duration-300">
               Virtual Tour 360°
             </Button>
           </Link>
@@ -59,7 +62,7 @@ export default function Hero() {
             <Button
               variant="outline"
               size="lg"
-              className="border-white bg-transparent px-8 py-3 text-lg text-white transition-all duration-300 hover:bg-white hover:text-black">
+              className="hover:bg-foreground hover:text-background dark:hover:bg-background dark:hover:text-foreground cursor-pointer px-8 py-3 text-lg transition-all duration-300">
               Panduan Virtual Tour
             </Button>
           </Link>

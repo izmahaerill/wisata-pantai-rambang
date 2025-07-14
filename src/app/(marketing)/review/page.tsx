@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -21,10 +22,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
+import { client } from "@/lib/auth/client";
 
 const schema = z.object({
   content: z.string().min(2),
@@ -33,6 +35,8 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 export default function Review() {
+  const { data: session } = client.useSession();
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [reviews, setReviews] = useState<any[]>([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
@@ -49,7 +53,6 @@ export default function Review() {
       try {
         const res = await fetch("/api/review");
         const data = await res.json();
-        console.log("Review dengan image:", data);
         setReviews(data);
       } catch (error) {
         console.error("Gagal ambil review:", error);
@@ -63,7 +66,6 @@ export default function Review() {
 
   async function onSubmit(values: Schema) {
     const formData = new FormData();
-
     formData.append("content", values.content);
 
     await toast.promise(
@@ -76,22 +78,30 @@ export default function Review() {
         const result = await response.json();
 
         if (!response.ok) {
-          toast.error(result.message);
-          return;
+          throw new Error(result.message);
         }
 
         form.reset();
         setDialogOpen(false);
-
         return result.message;
       })(),
       {
         loading: "Mengirim ulasan...",
-        success: (message) => message,
-        error: (error) => error.message,
+        success: (msg) => msg,
+        error: (err) => err.message,
       }
     );
   }
+
+  const handleSignIn = async () => {
+    const { error } = await client.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
+    if (error) {
+      console.error(error.message);
+    }
+  };
 
   return (
     <>
@@ -99,45 +109,68 @@ export default function Review() {
         heading="Ulasan Pengalaman Pengunjung"
         subheading="Pendapat mereka yang telah merasakan Pantai Rambang, secara virtual dan nyata."
       />
+
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
           <Button onClick={() => setDialogOpen(true)}>Tulis Ulasanmu</Button>
         </DialogTrigger>
         <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Tulis Ulasanmu</DialogTitle>
-            <DialogDescription>
-              Bagikan pengalamanmu untuk membantu orang lain.
-            </DialogDescription>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="mt-4 flex flex-col gap-4">
-                <FormField
-                  control={form.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Ulasanmu</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button disabled={form.formState.isSubmitting}>
-                  {form.formState.isSubmitting && (
-                    <Loader className="animate-spin" />
-                  )}
-                  Kirim Ulasanmu
+          {session?.user ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Tulis Ulasanmu</DialogTitle>
+                <DialogDescription>
+                  Bagikan pengalamanmu untuk membantu orang lain.
+                </DialogDescription>
+              </DialogHeader>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="mt-4 flex flex-col gap-4">
+                  <FormField
+                    control={form.control}
+                    name="content"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Ulasanmu</FormLabel>
+                        <FormControl>
+                          <Textarea {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting && (
+                      <Loader className="mr-2 animate-spin" />
+                    )}
+                    Kirim Ulasanmu
+                  </Button>
+                </form>
+              </Form>
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle>Masuk ke akunmu</DialogTitle>
+                <DialogDescription>
+                  Login dibutuhkan untuk mengirimkan ulasan.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button onClick={handleSignIn}>
+                  Sign in dengan
+                  <img
+                    src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                    alt="Google"
+                    className="h-5 w-5 pl-1"
+                  />
                 </Button>
-              </form>
-            </Form>
-          </DialogHeader>
+              </DialogFooter>
+            </>
+          )}
         </DialogContent>
       </Dialog>
-
       <div className="mt-10">
         {loadingReviews ? (
           <p>Memuat ulasan...</p>

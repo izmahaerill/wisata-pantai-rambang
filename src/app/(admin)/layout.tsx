@@ -8,9 +8,9 @@ export default async function AdminLayout({ children }: PropsWithChildren) {
     headers: await headers(),
   });
 
-  // if (!session || session?.user.role === "user") {
-  //   notFound();
-  // }
+  if (!session || session?.user.role === "user") {
+    notFound();
+  }
 
   return children;
 }

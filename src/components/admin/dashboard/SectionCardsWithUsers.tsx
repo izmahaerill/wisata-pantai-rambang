@@ -28,12 +28,12 @@ export function SectionCardsWithUsers({ users }: { users: UserData[] }) {
           <CardTitle className="text-3xl font-semibold tabular-nums">
             {count}
           </CardTitle>
-          <div>
+          {/* <div>
             <Badge variant="outline">
               <IconTrendingUp />
               +5%
             </Badge>
-          </div>
+          </div> */}
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="flex gap-2 font-medium">Users with reviews</div>
@@ -42,10 +42,6 @@ export function SectionCardsWithUsers({ users }: { users: UserData[] }) {
           </div>
         </CardFooter>
       </Card>
-
-      {/* Optional: bisa tambah card lain di sini */}
-
-      {/* Full-width table */}
       <div className="col-span-full">
         <DataTable data={users} />
       </div>
