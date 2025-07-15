@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import { withContentlayer } from "next-contentlayer";
 
 const config: NextConfig = {
   images: {
@@ -13,4 +12,4 @@ const config: NextConfig = {
   },
 };
 
-export default withContentlayer(config);
+export default config;
