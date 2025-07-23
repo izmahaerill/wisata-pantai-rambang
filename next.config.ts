@@ -1,15 +1,25 @@
-import type { NextConfig } from "next";
-
-const config: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
-    // domains: ["lh3.googleusercontent.com"],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "lh3.googleusercontent.com", // untuk Google Profile image
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "fav.farm",
+      },
+      {
+        protocol: "https",
+        hostname: "www.gstatic.com",
+      },
+      {
+        protocol: "https",
+        hostname: "shadcnblocks.com",
       },
     ],
   },
 };
 
-export default config;
+export default nextConfig;

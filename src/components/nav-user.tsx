@@ -42,6 +42,7 @@ export function NavUser() {
                 <AvatarImage
                   src={session?.user.image ?? ""}
                   alt={session?.user.name}
+                  loading="lazy"
                 />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
@@ -67,6 +68,7 @@ export function NavUser() {
                   <AvatarImage
                     src={session?.user.image ?? ""}
                     alt={session?.user.name}
+                    loading="lazy"
                   />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>

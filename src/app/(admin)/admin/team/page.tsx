@@ -39,7 +39,11 @@ export default async function Team() {
                 <TableCell className="font-medium">{index + 1}</TableCell>
                 <TableCell>
                   <Avatar>
-                    <AvatarImage src={team.image} alt={team.name} />
+                    <AvatarImage
+                      src={team.image}
+                      alt={team.name}
+                      loading="lazy"
+                    />
                     <AvatarFallback>
                       {toUpperCase(charAt(team.name, 0))}
                     </AvatarFallback>

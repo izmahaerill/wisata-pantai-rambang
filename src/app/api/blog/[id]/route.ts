@@ -1,5 +1,5 @@
 // src/app/api/blog/[id]/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 // GET Blog by ID

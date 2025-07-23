@@ -5,7 +5,6 @@ import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Icons } from "@/components/ui/icons"
 
 interface Testimonial {
   image: string
@@ -27,32 +26,16 @@ interface TestimonialsProps {
 export function Testimonials({
   testimonials,
   className,
-  // title = "Read what people are saying",
-  // description = "Dummy feedback from virtual customers using our component library.",
   maxDisplayed = 6,
 }: TestimonialsProps) {
   const [showAll, setShowAll] = useState(false)
 
-  const openInNewTab = (url: string) => {
-    window.open(url, "_blank")?.focus()
-  }
+  // const openInNewTab = (url: string) => {
+  //   window.open(url, "_blank")?.focus()
+  // }
 
   return (
     <div className={className}>
-      {/* <div className="flex flex-col items-center justify-center pt-5">
-        <div className="flex flex-col gap-5 mb-8">
-          <h2 className="text-center text-4xl font-medium">{title}</h2>
-          <p className="text-center text-muted-foreground">
-            {description.split("<br />").map((line, i) => (
-              <span key={i}>
-                {line}
-                {i !== description.split("<br />").length - 1 && <br />}
-              </span>
-            ))}
-          </p>
-        </div>
-      </div> */}
-
       <div className="relative">
         <div
           className={cn(
@@ -91,12 +74,6 @@ export function Testimonials({
                     {testimonial.text}
                   </p>
                 </div>
-                {/* <button
-                  onClick={() => openInNewTab(testimonial.social)}
-                  className="absolute top-4 right-4 hover:opacity-80 transition-opacity"
-                >
-                  <Icons.twitter className="h-4 w-4" aria-hidden="true" />
-                </button> */}
               </Card>
             ))}
         </div>

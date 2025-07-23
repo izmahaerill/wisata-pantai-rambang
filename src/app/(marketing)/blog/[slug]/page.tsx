@@ -1,20 +1,18 @@
 import { Footer } from "@/components/sections/Footer";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
-interface Props {
+type Props = {
   params: {
     slug: string;
   };
-}
+};
 
-interface Blog {
-  id: string;
-  title: string;
-  summary: string;
-  image: string;
-  published: string;
-  url?: string;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  return {
+    title: decodeURIComponent(params.slug),
+  };
 }
 
 export default async function Page({ params }: Props) {
@@ -22,7 +20,7 @@ export default async function Page({ params }: Props) {
 
   if (!res.ok) return notFound();
 
-  const post: Blog = await res.json();
+  const post = await res.json();
 
   const formattedDate = new Date(post.published).toLocaleDateString("id-ID", {
     day: "numeric",
@@ -41,6 +39,7 @@ export default async function Page({ params }: Props) {
                 alt={post.title}
                 fill
                 className="object-cover"
+                loading="lazy"
               />
             </div>
           </div>

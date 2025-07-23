@@ -1,5 +1,3 @@
-import { Dribbble, Github, Linkedin } from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Footer } from "@/components/sections/Footer";
 
@@ -61,7 +59,7 @@ const AboutUs = async () => {
           {teams.map((person) => (
             <div key={person.id} className="flex flex-col items-start">
               <Avatar className="mb-4 size-20 md:mb-5 lg:size-24">
-                <AvatarImage src={person.image} />
+                <AvatarImage loading="lazy" src={person.image} />
                 <AvatarFallback>{person.name}</AvatarFallback>
               </Avatar>
               <p className="font-medium">{person.name}</p>

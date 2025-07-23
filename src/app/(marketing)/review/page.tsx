@@ -27,27 +27,36 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { client } from "@/lib/auth/client";
+import Image from "next/image";
 
+// validasi
 const schema = z.object({
-  content: z.string().min(2),
+  content: z.string().min(2, "Ulasan harus memiliki minimal 2 karakter."),
 });
-
 type Schema = z.infer<typeof schema>;
+
+interface ReviewItem {
+  id: string;
+  content: string;
+  createdAt: string;
+  user: {
+    name: string;
+    image?: string;
+  };
+}
 
 export default function Review() {
   const { data: session } = client.useSession();
-
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<ReviewItem[]>([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
 
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      content: "",
-    },
+    defaultValues: { content: "" },
   });
 
+  // Ambil review saat mount
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -64,6 +73,7 @@ export default function Review() {
     fetchReviews();
   }, []);
 
+  // Submit ulasan
   async function onSubmit(values: Schema) {
     const formData = new FormData();
     formData.append("content", values.content);
@@ -93,14 +103,13 @@ export default function Review() {
     );
   }
 
+  // Login handler
   const handleSignIn = async () => {
     const { error } = await client.signIn.social({
       provider: "google",
       callbackURL: "/",
     });
-    if (error) {
-      console.error(error.message);
-    }
+    if (error) console.error(error.message);
   };
 
   return (
@@ -109,7 +118,6 @@ export default function Review() {
         heading="Ulasan Pengalaman Pengunjung"
         subheading="Pendapat mereka yang telah merasakan Pantai Rambang, secara virtual dan nyata."
       />
-
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
           <Button onClick={() => setDialogOpen(true)}>Tulis Ulasanmu</Button>
@@ -160,10 +168,13 @@ export default function Review() {
               <DialogFooter>
                 <Button onClick={handleSignIn}>
                   Sign in dengan
-                  <img
+                  <Image
                     src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                     alt="Google"
-                    className="h-5 w-5 pl-1"
+                    width={20}
+                    height={20}
+                    className="ml-2"
+                    loading="lazy"
                   />
                 </Button>
               </DialogFooter>
@@ -183,7 +194,7 @@ export default function Review() {
                 key={review.id}
                 className="rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md dark:bg-zinc-900">
                 <div className="mb-3 flex items-center gap-4">
-                  <img
+                  <Image
                     src={
                       review.user.image ||
                       `https://ui-avatars.com/api/?name=${encodeURIComponent(
@@ -191,7 +202,10 @@ export default function Review() {
                       )}&background=random`
                     }
                     alt={review.user.name}
-                    className="h-10 w-10 rounded-full object-cover"
+                    width={40}
+                    height={40}
+                    className="rounded-full object-cover"
+                    loading="lazy"
                   />
                   <div>
                     <p className="text-base font-semibold">

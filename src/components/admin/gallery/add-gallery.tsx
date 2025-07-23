@@ -42,7 +42,7 @@ export default function AddGalleryImage() {
     },
   });
 
-  async function onSubmit(values: Schema) {
+  async function onSubmit() {
     const formData = new FormData();
 
     if (selectedFile) {

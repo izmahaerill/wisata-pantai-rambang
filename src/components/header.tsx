@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { client } from "@/lib/auth/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -64,6 +65,7 @@ export default function Header() {
               src="https://fav.farm/%F0%9F%8F%96%EF%B8%8F"
               alt="Pantai"
               className="h-8 w-8"
+              loading="lazy"
             />
             Rambang
           </Link>
@@ -79,6 +81,7 @@ export default function Header() {
                   <AvatarImage
                     src={session.user.image ?? ""}
                     alt={session.user.name ?? "User"}
+                    loading="lazy"
                   />
                   <AvatarFallback>
                     {session.user.name?.charAt(0).toUpperCase() ?? "?"}
@@ -92,6 +95,7 @@ export default function Header() {
                       <AvatarImage
                         src={session.user.image ?? ""}
                         alt={session.user.name ?? "User"}
+                        loading="lazy"
                       />
                       <AvatarFallback>
                         {session.user.name?.charAt(0).toUpperCase() ?? "?"}
@@ -137,16 +141,21 @@ export default function Header() {
                 <DialogHeader>
                   <DialogTitle>Masuk ke akunmu</DialogTitle>
                   <DialogDescription>
-                    Gunakan akun Google untuk mengakses fitur ulasan.
+                    Gunakan akun Google untuk mengakses fitur lebih banyak.
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
-                  <Button onClick={handleSignIn}>
+                  <Button
+                    onClick={handleSignIn}
+                    aria-label="Sign in with google">
                     Sign in dengan
-                    <img
+                    <Image
                       src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                       alt="Google"
-                      className="h-5 w-5 pl-1"
+                      width={20}
+                      height={20}
+                      className="pl-1"
+                      loading="lazy"
                     />
                   </Button>
                 </DialogFooter>
@@ -154,7 +163,6 @@ export default function Header() {
             </Dialog>
           )}
         </div>
-
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
@@ -183,10 +191,13 @@ export default function Header() {
                 ) : (
                   <Button onClick={handleSignIn}>
                     Sign in dengan
-                    <img
+                    <Image
                       src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                       alt="Google"
-                      className="h-5 w-5 pl-1"
+                      width={20}
+                      height={20}
+                      className="pl-1"
+                      loading="lazy"
                     />
                   </Button>
                 )}

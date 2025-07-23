@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 interface Footer7Props {
   logo?: {
@@ -25,8 +25,9 @@ const Footer = ({
             <div className="flex items-center gap-2 lg:justify-start">
               <img
                 src="https://fav.farm/%F0%9F%8F%96%EF%B8%8F"
-                alt="Pantai"
+                alt="Wisata Pantai Rambang"
                 className="h-8 w-8"
+                loading="lazy"
               />
               <h2 className="text-xl font-semibold">{logo.title}</h2>
             </div>
@@ -37,24 +38,20 @@ const Footer = ({
             <ul className="text-muted-foreground flex items-center space-x-6">
               <li className="hover:text-primary font-medium">
                 <Link href="https://www.instagram.com/rambangbeach/">
-                  <FaInstagram className="size-6" />
+                  <FaInstagram
+                    className="size-6"
+                    aria-label="Instagram pantai rambang"
+                  />
                 </Link>
               </li>
               <li className="hover:text-primary font-medium">
                 <Link href="https://web.facebook.com/profile.php?id=100021732559140&locale=id_ID">
-                  <FaFacebook className="size-6" />
+                  <FaFacebook
+                    className="size-6"
+                    aria-label="Facebook pantai rambang"
+                  />
                 </Link>
               </li>
-              {/* <li className="hover:text-primary font-medium">
-                <Link href="https://x.com/Azmiiyaa22">
-                  <FaTwitter className="size-6" />
-                </Link>
-              </li> */}
-              {/* <li className="hover:text-primary font-medium">
-                <Link href="www.linkedin.com/in/muh-haeril-azmi-a966622a7">
-                  <FaLinkedin className="size-6" />
-                </Link>
-              </li> */}
             </ul>
           </div>
           <div className="flex w-full justify-center px-4 lg:w-1/2 lg:justify-end lg:pr-36">

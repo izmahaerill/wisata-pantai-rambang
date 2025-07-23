@@ -1,11 +1,8 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
 
 export default function VirtualTourPage() {
-  const router = useRouter();
-
   return (
     <div className="relative h-screen w-full">
       <iframe

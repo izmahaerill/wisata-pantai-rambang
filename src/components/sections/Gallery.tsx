@@ -10,11 +10,18 @@ export default function Gallery() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/gallery")
-      .then((res) => res.json())
-      .then((data) => setImages(data))
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    const fetchGallery = async () => {
+      try {
+        const res = await fetch("/api/gallery", { cache: "no-store" });
+        const data = await res.json();
+        setImages(data);
+      } catch (error) {
+        console.error("Failed to fetch gallery:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchGallery();
   }, []);
 
   const skeletonItems = Array.from({ length: 5 }).map((_, i) => (
@@ -42,13 +49,21 @@ export default function Gallery() {
                 key={img.id}
                 className={i === 3 || i === 6 ? "md:col-span-2" : ""}
                 header={
-                  <Image
-                    src={`/images/gallery/${img.image}`}
-                    alt={`Gallery ${i}`}
-                    width={500}
-                    height={300}
-                    className="h-full w-full rounded-xl object-cover"
-                  />
+                  <div className="relative h-[300px] w-full">
+                    <Image
+                      src={`/images/gallery/${img.image}`}
+                      alt={`Gallery ${i}`}
+                      fill
+                      className="rounded-xl object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      placeholder="empty"
+                      loading="lazy"
+                      onError={(e) =>
+                        ((e.target as HTMLImageElement).src =
+                          "/images/fallback.jpg")
+                      }
+                    />
+                  </div>
                 }
               />
             ))}

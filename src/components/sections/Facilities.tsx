@@ -60,6 +60,7 @@ export default function Facilities() {
       </section>
     );
   }
+
   return (
     <section className="w-full bg-gradient-to-b py-16">
       <div className="mx-auto max-w-7xl px-4">
@@ -68,7 +69,6 @@ export default function Facilities() {
           subheading="Nikmati beragam fasilitas yang kami sediakan, mulai dari area parkir, gazebo santai, toilet umum, hingga spot kuliner lokal yang siap memanjakan kunjunganmu."
           align="center"
         />
-
         <div className="grid place-items-center">
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {facilities.map((facility) => (
@@ -78,7 +78,7 @@ export default function Facilities() {
                 className="overflow-visible">
                 <Card className="flex h-full w-full flex-col items-center justify-center text-center">
                   <CardContent className="flex flex-col items-center justify-center p-6">
-                    <div className="mb-4 flex h-24 w-24 items-center justify-center">
+                    <div className="relative mb-4 h-24 w-24 md:h-28 md:w-28">
                       {facility.image ? (
                         <Image
                           src={
@@ -87,12 +87,13 @@ export default function Facilities() {
                               : `/images/facilities/${facility.image}`
                           }
                           alt={facility.name}
-                          width={70}
-                          height={70}
+                          fill
                           className="object-contain dark:invert"
+                          sizes="(max-width: 768px) 96px, 112px"
+                          loading="lazy"
                         />
                       ) : (
-                        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-200 text-sm text-gray-500">
+                        <div className="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-sm text-gray-500">
                           No Image
                         </div>
                       )}

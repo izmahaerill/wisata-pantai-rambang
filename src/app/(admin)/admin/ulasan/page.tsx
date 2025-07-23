@@ -49,6 +49,7 @@ export default async function Ulasan() {
                         )}`
                       }
                       alt={review.user.name}
+                      loading="lazy"
                     />
                     <AvatarFallback>
                       {toUpperCase(charAt(review.user.name, 0))}

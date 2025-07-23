@@ -18,6 +18,7 @@ export default function Maps() {
           allowFullScreen
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
+          title="Peta pantai rambang"
           className="h-full w-full"></iframe>
       </div>
     </div>

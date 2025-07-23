@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 export default function EditBlog({
   id,
@@ -85,6 +86,7 @@ export default function EditBlog({
         setOpen(false);
       }
     } catch (error) {
+      console.error("Edit Blog error:", error);
       toast.error("Terjadi kesalahan.");
     }
   };
@@ -117,11 +119,15 @@ export default function EditBlog({
           />
           <div className="space-y-2">
             {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="h-32 rounded-md object-cover"
-              />
+              <div className="relative h-32 w-full">
+                <Image
+                  src={preview}
+                  alt="Preview"
+                  fill
+                  className="rounded-md object-cover"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                />
+              </div>
             )}
             <div>
               <label

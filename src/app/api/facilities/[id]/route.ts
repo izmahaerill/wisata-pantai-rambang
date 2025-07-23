@@ -1,5 +1,4 @@
 import { db } from "@/lib/db";
-import { Role } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";

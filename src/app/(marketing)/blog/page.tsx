@@ -5,6 +5,7 @@ import Heading from "@/components/micro/Heading";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Footer } from "@/components/sections/Footer";
+import Image from "next/image";
 
 type BlogPost = {
   id: string;
@@ -15,15 +16,19 @@ type BlogPost = {
   url?: string;
 };
 
+type BlogPostAPI = Omit<BlogPost, "published"> & {
+  published: string;
+};
+
 const BlogPage = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
     fetch("/api/blog")
       .then((res) => res.json())
-      .then((data) =>
+      .then((data: BlogPostAPI[]) =>
         setPosts(
-          data.map((post: any) => ({
+          data.map((post) => ({
             ...post,
             published: new Date(post.published).toLocaleDateString("id-ID", {
               day: "numeric",
@@ -69,11 +74,14 @@ const BlogPage = () => {
                     </div>
                     <div className="order-first sm:order-last sm:col-span-5">
                       <Link href={`/blog/${post.id}`} className="block">
-                        <div className="border-border aspect-[16/9] overflow-clip rounded-lg border">
-                          <img
+                        <div className="border-border relative aspect-[16/9] h-56 w-full overflow-clip rounded-lg border sm:h-64 md:h-72 lg:h-80">
+                          <Image
                             src={post.image}
                             alt={post.title}
-                            className="fade-in h-full w-full object-cover transition-opacity duration-200 hover:opacity-70"
+                            fill
+                            className="fade-in rounded-lg object-cover transition-opacity duration-200 hover:opacity-70"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            loading="lazy"
                           />
                         </div>
                       </Link>

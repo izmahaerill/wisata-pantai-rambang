@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
     await fs.writeFile(filePath, buffer);
     return NextResponse.json({ url: `/images/blog/${filename}` });
   } catch (err) {
+    console.error("File upload error:", err);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

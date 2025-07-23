@@ -17,8 +17,20 @@ import { charAt, toUpperCase } from "string-ts";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
+type BlogPost = {
+  id: string;
+  title: string;
+  summary: string;
+  image: string;
+  published: string;
+};
+
 export default function BlogTable() {
-  const { data: blogs, isLoading, mutate } = useSWR("/api/blog", fetcher);
+  const {
+    data: blogs,
+    isLoading,
+    mutate,
+  } = useSWR<BlogPost[]>("/api/blog", fetcher);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -42,12 +54,16 @@ export default function BlogTable() {
         </TableHeader>
         <TableBody>
           {blogs && blogs.length > 0 ? (
-            blogs.map((blog: any, index: number) => (
+            blogs.map((blog, index) => (
               <TableRow key={blog.id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>
-                  <Avatar>
-                    <AvatarImage src={blog.image} alt={blog.title} />
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage
+                      src={blog.image}
+                      alt={blog.title}
+                      loading="lazy"
+                    />
                     <AvatarFallback>
                       {toUpperCase(charAt(blog.title, 0))}
                     </AvatarFallback>
@@ -58,7 +74,11 @@ export default function BlogTable() {
                   {blog.summary}
                 </TableCell>
                 <TableCell>
-                  {new Date(blog.published).toLocaleDateString()}
+                  {new Date(blog.published).toLocaleDateString("id-ID", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
                 </TableCell>
                 <TableCell className="flex justify-end gap-2">
                   <EditBlog id={blog.id} onSuccess={mutate} />

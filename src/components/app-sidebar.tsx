@@ -1,10 +1,8 @@
 import {
-  BadgeCheck,
   BadgePlus,
   Calendar,
   Home,
   Inbox,
-  Settings,
   Users,
   NotebookPen,
 } from "lucide-react";
@@ -52,6 +50,11 @@ const items = [
     url: "/admin/ulasan",
     icon: Calendar,
   },
+  // {
+  //   title: "Events",
+  //   url: "/Events",
+  //   icon: Event,
+  // },
   // {
   //   title: "Settings",
   //   url: "/admin/settings",

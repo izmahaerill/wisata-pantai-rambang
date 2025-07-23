@@ -43,6 +43,7 @@ export default async function AdminGallery() {
                     <AvatarImage
                       src={`/images/gallery/${item.image}`}
                       alt="Gallery Image"
+                      loading="lazy"
                     />
                     <AvatarFallback>
                       {toUpperCase(charAt(item.image, 0))}

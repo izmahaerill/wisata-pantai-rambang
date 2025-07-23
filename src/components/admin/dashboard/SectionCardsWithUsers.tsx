@@ -1,6 +1,5 @@
 "use client";
 
-import { IconTrendingUp } from "@tabler/icons-react";
 import {
   Card,
   CardDescription,
@@ -8,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { DataTable } from "./data-table";
 
 export type UserData = {

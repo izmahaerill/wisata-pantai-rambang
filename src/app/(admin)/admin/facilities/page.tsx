@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
@@ -8,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Pencil, Trash } from "lucide-react";
 import AddFacilities from "@/components/admin/facilities/add-facilities";
 import { db } from "@/lib/db";
 import { charAt, toUpperCase } from "string-ts";
@@ -42,7 +40,11 @@ export default async function Facilities() {
                 <TableCell className="font-medium">{index + 1}</TableCell>
                 <TableCell>
                   <Avatar className="dark:invert">
-                    <AvatarImage src={facility.image} alt={facility.name} />
+                    <AvatarImage
+                      src={facility.image}
+                      alt={facility.name}
+                      loading="lazy"
+                    />
                     <AvatarFallback>
                       {toUpperCase(charAt(facility.name, 0))}
                     </AvatarFallback>

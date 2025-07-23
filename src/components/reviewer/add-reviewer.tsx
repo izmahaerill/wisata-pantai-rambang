@@ -1,5 +1,5 @@
-// components/reviewer/AddReview.tsx
 "use client";
+
 import { client } from "@/lib/auth/client";
 import {
   Dialog,
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface AddReviewProps {
   open: boolean;
@@ -33,39 +34,18 @@ export default function AddReview({
   const [username, setUsername] = useState("");
   const [date, setDate] = useState("");
   const [text, setText] = useState("");
-  const [image, setImage] = useState(""); // ✅ penambahan state untuk image
-  const [loading, setLoading] = useState(true); // ✅ opsional: untuk cek auth
+  const [image, setImage] = useState("");
 
-  //  useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       const session = await client.getSession();
-  //       if (session?.user) {
-  //         setUsername(session.user.name || "");
-  //         setImage(session.user.image || ""); // ✅ isi image
-  //       }
-  //     } catch (error) {
-  //       console.error("Gagal mengambil sesi login:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   if (open) fetchUser();
-  // }, [open]);
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data: session } = await client.getSession(); // ✅ pakai client dari better-auth/react
-        console.log("Session", session);
+        const { data: session } = await client.getSession();
         if (session?.user) {
           setUsername(session.user.name || "");
           setImage(session.user.image || "");
         }
       } catch (error) {
         console.error("Gagal mengambil sesi login:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -76,16 +56,13 @@ export default function AddReview({
     e.preventDefault();
 
     const reviewData = { username, date, text, image };
-    console.log(reviewData);
-
-    // Kirim ke komponen induk
     onSubmit(reviewData);
 
-    // Reset dan tutup modal
+    // Reset form dan tutup modal
     setUsername("");
     setDate("");
     setText("");
-    setImage(""); // ✅ reset image juga
+    setImage("");
     onOpenChange(false);
   };
 
@@ -119,14 +96,15 @@ export default function AddReview({
             onChange={(e) => setText(e.target.value)}
             required
           />
-
-          {/* ✅ Tambahan preview image profil jika ada */}
           {image && (
             <div className="flex items-center gap-2">
-              <img
+              <Image
                 src={image}
                 alt="Avatar"
-                className="h-10 w-10 rounded-full"
+                width={40}
+                height={40}
+                className="rounded-full object-cover"
+                loading="lazy"
               />
               <span className="text-muted-foreground text-sm">
                 Tampilan foto profil kamu

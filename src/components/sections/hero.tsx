@@ -13,42 +13,35 @@ export default function Hero() {
             ✨ Better Experience With VR Tour • 360°
           </Badge>
         </div>
-
         <div className="flex flex-wrap justify-center gap-3">
           <Badge
             variant="outline"
-            className="flex items-center gap-2 rounded-full border-emerald-500 bg-emerald-600 px-4 py-1 text-xs text-white">
-            <img
-              src="https://fav.farm/%F0%9F%8F%96%EF%B8%8F"
-              alt="Pantai"
-              className="h-4 w-4"
-            />
-            PANTAI LOKAL
+            className="rounded-full border-emerald-600 bg-emerald-700 px-4 py-1 text-sm font-medium text-white">
+            🌊 PANTAI LOKAL
           </Badge>
+
           <Badge
             variant="outline"
-            className="rounded-full border-orange-500 bg-orange-600 px-4 py-1 text-xs text-white">
+            className="rounded-full border-orange-600 bg-orange-700 px-4 py-1 text-sm font-medium text-white">
             🔥 TRENDING
           </Badge>
+
           <Badge
             variant="outline"
-            className="rounded-full border-purple-500 bg-purple-600 px-4 py-1 text-xs text-white">
+            className="rounded-full border-purple-600 bg-purple-700 px-4 py-1 text-sm font-medium text-white">
             ⭐ PREMIUM
           </Badge>
         </div>
-
         <h1 className="text-4xl leading-tight font-bold md:text-5xl lg:text-6xl">
           Rasakan Keindahan Pantai
           <br />
           Rambang Lewat Tour Virtual 360°
         </h1>
-
         <p className="text-muted-foreground mx-auto max-w-3xl text-lg leading-relaxed md:text-xl">
           Kunjungi Pantai Rambang dengan cara baru! Nikmati Tour Virtual 360°,
           temukan fasilitas terbaik, dan rencanakan perjalananmu. Pantai Rambang
           siap menyambutmu dalam segala keindahannya!
         </p>
-
         <div className="flex flex-col justify-center gap-4 sm:flex-row">
           <Link href="/virtual-tour">
             <Button

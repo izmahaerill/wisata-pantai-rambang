@@ -1,3 +1,4 @@
+// src/components/admin/gallery/edit-gallery.tsx
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader, UserPen } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -46,7 +47,7 @@ export default function EditGalleryImage({ id }: Props) {
     },
   });
 
-  async function onSubmit(values: Schema) {
+  async function onSubmit() {
     const formData = new FormData();
     if (selectedFile) {
       formData.append("image", selectedFile);
