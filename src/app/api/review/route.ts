@@ -7,7 +7,7 @@ export async function GET() {
     const reviews = await db.review.findMany({
       where: { approved: true },
       include: {
-        user: true, // ✅ ini penting agar bisa ambil user.name dan user.image
+        user: true,
       },
       orderBy: {
         createdAt: "desc",

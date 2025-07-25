@@ -19,17 +19,17 @@ interface Props {
   id: string;
 }
 
-export default function Delete({ id }: Props) {
+export default function Reject({ id }: Props) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isRejecting, setIsRejecting] = useState(false);
 
   async function handleDelete() {
-    setIsDeleting(true);
+    setIsRejecting(true);
 
     await toast.promise(
       (async () => {
         const response = await fetch(`/api/review/${id}`, {
-          method: "DELETE",
+          method: "PUT",
         });
 
         const result = await response.json();
@@ -44,13 +44,13 @@ export default function Delete({ id }: Props) {
         return result.message;
       })(),
       {
-        loading: "Deleting review...",
+        loading: "Rejecting review...",
         success: (message) => message,
         error: (error) => error.message,
       }
     );
 
-    setIsDeleting(false);
+    setIsRejecting(false);
   }
 
   return (
@@ -61,14 +61,14 @@ export default function Delete({ id }: Props) {
           size="icon"
           onClick={() => setDialogOpen(true)}>
           <Trash />
-          <span className="sr-only">Delete Review</span>
+          <span className="sr-only">Reject Review</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Review</DialogTitle>
+          <DialogTitle>Reject Review</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this review? This action cannot be
+            Are you sure you want to reject this review? This action cannot be
             undone.
           </DialogDescription>
         </DialogHeader>
@@ -78,10 +78,10 @@ export default function Delete({ id }: Props) {
           </DialogClose>
           <Button
             variant="destructive"
-            disabled={isDeleting}
+            disabled={isRejecting}
             onClick={handleDelete}>
-            {isDeleting && <Loader className="animate-spin" />}
-            Confirm Delete
+            {isRejecting && <Loader className="animate-spin" />}
+            Confirm Reject
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 
-export async function DELETE(
+export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -15,15 +15,27 @@ export async function DELETE(
       return Response.json({ message: "Review not found." }, { status: 404 });
     }
 
-    await db.review.delete({
+    await db.review.update({
       where: { id },
+      data: {
+        approved: null,
+      },
+    });
+
+    await db.notification.create({
+      data: {
+        userId: review.userId,
+        type: "REVIEW_REJECTED",
+        message: `Ulasan anda ditolak`,
+        relatedReviewId: review.id,
+      },
     });
 
     return Response.json({
-      message: "Review deleted successfully.",
+      message: "Review rejected successfully.",
     });
   } catch (error) {
-    console.error("Error deleting review:", error);
+    console.error("Error rejecting review:", error);
 
     return Response.json(
       { message: "Internal server error." },

@@ -121,7 +121,7 @@ model Review {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   content   String
   // rating       Int            @default(5) // skala 1–5
-  approved  Boolean  @default(false)
+  approved  Boolean? @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -148,6 +148,7 @@ model Notification {
 enum NotificationType {
   REVIEW_SUBMITTED
   REVIEW_APPROVED
+  REVIEW_REJECTED
 }
 
 model Facilities {

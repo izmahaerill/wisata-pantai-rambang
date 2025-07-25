@@ -1,5 +1,5 @@
 import Approve from "@/components/admin/ulasan/approve";
-import Delete from "@/components/admin/ulasan/delete";
+import Reject from "@/components/admin/ulasan/reject";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
@@ -61,9 +61,11 @@ export default async function Ulasan() {
                   {review.content}
                 </TableCell>
                 <TableCell>
-                  {review.approved ? (
+                  {review.approved === null ? (
+                    <span className="font-medium text-red-600">Ditolak</span>
+                  ) : review.approved ? (
                     <span className="font-medium text-green-600">
-                      Disetujui
+                      Disetejui
                     </span>
                   ) : (
                     <span className="font-medium text-yellow-600">
@@ -72,8 +74,8 @@ export default async function Ulasan() {
                   )}
                 </TableCell>
                 <TableCell className="flex justify-end gap-2">
-                  {!review.approved && <Approve id={review.id} />}
-                  <Delete id={review.id} />
+                  <Approve id={review.id} />
+                  <Reject id={review.id} />
                 </TableCell>
               </TableRow>
             ))

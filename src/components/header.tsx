@@ -31,8 +31,14 @@ import {
 } from "@/components/ui/sheet";
 import { LogOut, Menu, BellIcon } from "lucide-react";
 import ModeToggle from "@/components/mode-toggle";
+import NotificationToggle from "./notification-toggle";
+import { Notification } from "@prisma/client";
 
-export default function Header() {
+interface Props {
+  notifications: Notification[];
+}
+
+export default function Header({ notifications }: Props) {
   const { data: session } = client.useSession();
 
   const handleSignIn = async () => {
@@ -75,63 +81,62 @@ export default function Header() {
           <Link href="/about">About</Link>
           <Link href="/blog">Blog</Link>
           {session?.user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="h-8 w-8 cursor-pointer">
-                  <AvatarImage
-                    src={session.user.image ?? ""}
-                    alt={session.user.name ?? "User"}
-                    loading="lazy"
-                  />
-                  <AvatarFallback>
-                    {session.user.name?.charAt(0).toUpperCase() ?? "?"}
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>
-                  <div className="flex items-center gap-2">
-                    <Avatar>
-                      <AvatarImage
-                        src={session.user.image ?? ""}
-                        alt={session.user.name ?? "User"}
-                        loading="lazy"
-                      />
-                      <AvatarFallback>
-                        {session.user.name?.charAt(0).toUpperCase() ?? "?"}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">{session.user.name}</p>
-                      <p className="text-muted-foreground text-xs">
-                        {session.user.email}
-                      </p>
+            <div className="flex items-center gap-6">
+              <NotificationToggle notifications={notifications} />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="h-8 w-8 cursor-pointer">
+                    <AvatarImage
+                      src={session.user.image ?? ""}
+                      alt={session.user.name ?? "User"}
+                      loading="lazy"
+                    />
+                    <AvatarFallback>
+                      {session.user.name?.charAt(0).toUpperCase() ?? "?"}
+                    </AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex items-center gap-2">
+                      <Avatar>
+                        <AvatarImage
+                          src={session.user.image ?? ""}
+                          alt={session.user.name ?? "User"}
+                          loading="lazy"
+                        />
+                        <AvatarFallback>
+                          {session.user.name?.charAt(0).toUpperCase() ?? "?"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-medium">{session.user.name}</p>
+                        <p className="text-muted-foreground text-xs">
+                          {session.user.email}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {session.user.role === "admin" && (
-                  <Link href="/admin">
-                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
-                  </Link>
-                )}
-                <DropdownMenuItem>
-                  <BellIcon className="mr-2 h-4 w-4" />
-                  Notifikasi
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <div className="flex items-center gap-2">
-                    <ModeToggle />
-                    Switch Theme
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Sign out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {session.user.role === "admin" && (
+                    <Link href="/admin">
+                      <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                    </Link>
+                  )}
+                  <DropdownMenuItem>
+                    <div className="flex items-center gap-2">
+                      <ModeToggle />
+                      Switch Theme
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           ) : (
             <Dialog>
               <DialogTrigger asChild>
@@ -163,7 +168,8 @@ export default function Header() {
             </Dialog>
           )}
         </div>
-        <div className="md:hidden">
+        <div className="flex items-center gap-6 md:hidden">
+          <NotificationToggle notifications={notifications} />
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
