@@ -29,7 +29,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { LogOut, Menu, BellIcon } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import ModeToggle from "@/components/mode-toggle";
 import NotificationToggle from "./notification-toggle";
 import { Notification } from "@prisma/client";
