@@ -43,3 +43,35 @@ export async function PUT(
     );
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { id } = params;
+
+    const review = await db.review.findUnique({
+      where: { id },
+    });
+
+    if (!review) {
+      return Response.json(
+        { message: "Review tidak ditemukan." },
+        { status: 404 }
+      );
+    }
+
+    await db.review.delete({
+      where: { id },
+    });
+
+    return Response.json({ message: "Review berhasil dihapus." });
+  } catch (error) {
+    console.error("Error deleting review:", error);
+    return Response.json(
+      { message: "Gagal menghapus ulasan." },
+      { status: 500 }
+    );
+  }
+}

@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Loader, Trash } from "lucide-react";
+import { Loader, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -60,7 +60,7 @@ export default function Reject({ id }: Props) {
           variant="destructive"
           size="icon"
           onClick={() => setDialogOpen(true)}>
-          <Trash />
+          <X />
           <span className="sr-only">Reject Review</span>
         </Button>
       </DialogTrigger>

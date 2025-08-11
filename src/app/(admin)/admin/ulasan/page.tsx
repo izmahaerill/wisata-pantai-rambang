@@ -1,5 +1,6 @@
 import Approve from "@/components/admin/ulasan/approve";
 import Reject from "@/components/admin/ulasan/reject";
+import Delete from "@/components/admin/ulasan/delete";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
@@ -76,6 +77,7 @@ export default async function Ulasan() {
                 <TableCell className="flex justify-end gap-2">
                   <Approve id={review.id} />
                   <Reject id={review.id} />
+                  <Delete id={review.id} />
                 </TableCell>
               </TableRow>
             ))
